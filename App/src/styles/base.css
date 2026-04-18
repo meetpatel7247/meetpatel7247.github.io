@@ -4,11 +4,15 @@
     padding: 0;
 }
 
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
-    overflow-x: hidden;
     line-height: 1.5;
     background-image:
         radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.05), transparent 25%),
