@@ -11,7 +11,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://<your-username>.github.io/<your-repo-name>",
+  "homepage": "https://meetpatel7247.github.io/Event-Management-System",
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.14.0",
