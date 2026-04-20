@@ -35,7 +35,7 @@ function App() {
   }, [location.search]);
 
   return (
-    <div className="app-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="app-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
       {/* Scroll to top utility when navigating pages */}
       <ScrollToTop />
 

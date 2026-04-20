@@ -9,13 +9,7 @@ async function findEventById(id) {
 }
 
 async function createEvent(payload) {
-  return await EventModel.create({
-    title: payload.title,
-    category: payload.category,
-    price: payload.price,
-    organizerId: payload.organizerId,
-    image: payload.image,
-  });
+  return await EventModel.create(payload);
 }
 
 async function updateEvent(id, payload) {

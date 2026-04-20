@@ -1,7 +1,10 @@
 .wrapper {
     margin: 1rem auto;
     max-width: var(--max-width);
+    width: 100%;
+    overflow: hidden;
     position: relative;
+    padding: 0 2rem;
 }
 
 .navBtn {
@@ -45,6 +48,9 @@
 @media (max-width: 768px) {
     .navBtn {
         display: none;
+    }
+    .wrapper {
+        padding: 0 1rem;
     }
 }
 

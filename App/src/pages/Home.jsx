@@ -99,7 +99,7 @@ const Home = ({ searchTerm }) => {
                     ) : (
                         <div className="responsive-grid">
                             {filteredEvents.map((event) => (
-                                <EventCard key={event._id} event={event} />
+                                <EventCard key={event._id} event={event} isGrid={true} />
                             ))}
                         </div>
                     )}

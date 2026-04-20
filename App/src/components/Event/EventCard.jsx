@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBookingDetails } from '../../store/bookingSlice';
 import withFadeIn from '../../hoc/withFadeIn';
+import styles from './EventCard.module.css';
 
 /**
  * EventCard Component
@@ -14,7 +15,7 @@ import withFadeIn from '../../hoc/withFadeIn';
  * 
  * @param {Object} event - The full event data object
  */
-const EventCard = ({ event }) => {
+const EventCard = ({ event, isGrid = false }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
@@ -47,20 +48,11 @@ const EventCard = ({ event }) => {
 
     return (
         <div
-            className="premium-card"
-            style={{
-                padding: 0,
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                cursor: 'pointer',
-                height: '100%',
-                minHeight: 'unset',
-                border: '1px solid var(--border-color)' // Ensure border is visible but controlled by CSS var
-            }}
+            className={`premium-card ${styles.cardWrapper}`}
+            data-layout={isGrid ? "grid" : "carousel"}
             onClick={() => navigate(`/event/${event._id}`)}
         >
-            <div style={{ height: '180px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+            <div className={styles.imgContainer}>
                 <motion.img
                     src={imageSrc}
                     alt={event.title}
@@ -82,53 +74,20 @@ const EventCard = ({ event }) => {
                     opacity: 0.6
                 }} />
             </div>
-            <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                <div style={{
-                    fontSize: '0.9rem',
-                    color: 'var(--secondary-color)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    marginBottom: '0.5rem',
-                    fontWeight: '600'
-                }}>
+            <div className={styles.contentContainer}>
+                <div className={styles.date}>
                     {new Date(event.date).toLocaleDateString()}
                 </div>
-                <h3 style={{
-                    fontSize: '1.3rem',
-                    marginBottom: '0.5rem',
-                    fontWeight: '700',
-                    lineHeight: '1.4',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    color: '#fff',
-                    textShadow: '0 0 5px rgba(0, 243, 255, 0.5)'
-                }}>{event.title}</h3>
-                <p style={{
-                    color: 'var(--text-muted)',
-                    fontSize: '0.95rem',
-                    marginBottom: '1rem',
-                    flex: 1,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                }}>
+                <h3 className={styles.title}>{event.title}</h3>
+                <p className={styles.location}>
                     {event.location}
                 </p>
                 <div style={{ marginTop: 'auto' }}>
-                    <div style={{
-                        fontSize: '1.4rem',
-                        fontWeight: 'bold',
-                        color: 'var(--primary-color)',
-                        marginBottom: '1rem',
-                        textShadow: '0 0 10px rgba(0, 243, 255, 0.3)'
-                    }}>
+                    <div className={styles.price}>
                         ${event.price}
                     </div>
                     <button
-                        className="premium-button"
-                        style={{ width: '100%', fontSize: '1.05rem', padding: '12px', fontWeight: 'bold', letterSpacing: '1px' }}
+                        className={`premium-button ${styles.bookBtn}`}
                         onClick={handleBook}
                     >
                         Book Ticket

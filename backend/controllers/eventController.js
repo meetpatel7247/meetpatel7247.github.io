@@ -23,20 +23,17 @@ async function getEventById(req, res, next) {
 
 async function createEvent(req, res, next) {
   try {
-    const { title, category, price } = req.body;
-    if (!title) {
+    const payload = { ...req.body };
+    if (!payload.title) {
       return res.status(400).json({ error: 'Title is required' });
     }
-    const organizerId = req.user ? req.user.userId : null;
+    payload.organizerId = req.user ? req.user.userId : null;
     
-    let imageUrl = null;
     if (req.file) {
-      imageUrl = '/uploads/' + req.file.filename;
-    } else if (req.body.image) {
-      imageUrl = req.body.image;
+      payload.image = '/uploads/' + req.file.filename;
     }
 
-    const created = await eventService.createEvent({ title, category, price, organizerId, image: imageUrl });
+    const created = await eventService.createEvent(payload);
     res.status(201).json(created);
   } catch (err) {
     next(err);

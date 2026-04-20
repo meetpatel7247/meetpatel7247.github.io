@@ -24,7 +24,7 @@
     --shadow-card: 0 0 10px rgba(188, 19, 254, 0.2);
 
     /* Layout */
-    --max-width: 1280px;
+    --max-width: 100%;
     --nav-height: 80px;
     --radius: 8px;
 }

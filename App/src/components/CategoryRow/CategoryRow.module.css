@@ -57,14 +57,30 @@
 }
 
 @media (max-width: 768px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+    .container {
+        padding: 1.5rem 1rem;
     }
-}
-
-@media (max-width: 480px) {
     .grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+    .grid::-webkit-scrollbar {
+        display: none;
+    }
+    .card {
+        flex: 0 0 calc(33% - 1rem);
+        min-width: 120px;
+        scroll-snap-align: start;
+        padding: 1rem;
+    }
+    .icon {
+        font-size: 2rem;
+    }
+    .label {
+        font-size: 0.9rem;
     }
 }
