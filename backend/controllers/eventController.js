@@ -1,5 +1,45 @@
 const eventService = require('../services/eventService');
 
+function parseMaybeJson(value) {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return null;
+  }
+}
+
+function normalizeEventPayload(rawBody = {}) {
+  // Support direct JSON body, multipart text fields, and nested/stringified payloads.
+  const body = rawBody && typeof rawBody === 'object' ? rawBody : {};
+  const nestedPayload =
+    parseMaybeJson(body.eventData) ||
+    parseMaybeJson(body.event) ||
+    parseMaybeJson(body.payload) ||
+    (body.eventData && typeof body.eventData === 'object' ? body.eventData : null) ||
+    (body.event && typeof body.event === 'object' ? body.event : null) ||
+    (body.payload && typeof body.payload === 'object' ? body.payload : null);
+
+  const merged = { ...body, ...(nestedPayload || {}) };
+  const normalized = {
+    ...merged,
+    date: merged.date ?? merged.eventDate ?? merged.startDate,
+    time: merged.time ?? merged.eventTime ?? merged.startTime,
+    location: merged.location ?? merged.venue ?? merged.eventLocation,
+    description: merged.description ?? merged.details,
+  };
+
+  ['title', 'date', 'time', 'location', 'description', 'category'].forEach((key) => {
+    if (typeof normalized[key] === 'string') {
+      normalized[key] = normalized[key].trim();
+    }
+  });
+
+  return normalized;
+}
+
 async function getEvents(req, res, next) {
   try {
     const data = await eventService.listEvents();
@@ -23,7 +63,8 @@ async function getEventById(req, res, next) {
 
 async function createEvent(req, res, next) {
   try {
-    const payload = { ...req.body };
+    console.log("==> Incoming createEvent req.body:", req.body);
+    const payload = normalizeEventPayload(req.body);
     if (!payload.title) {
       return res.status(400).json({ error: 'Title is required' });
     }
@@ -42,7 +83,7 @@ async function createEvent(req, res, next) {
 
 async function updateEvent(req, res, next) {
   try {
-    const payload = { ...req.body };
+    const payload = normalizeEventPayload(req.body);
     if (req.file) {
       payload.image = '/uploads/' + req.file.filename;
     }
